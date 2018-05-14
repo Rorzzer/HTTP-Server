@@ -9,7 +9,62 @@
 #include "certcheck.h"
 
 
-char* getfield(char* line, int num)
+int main(int argc, char *argv[]){
+
+    // Check the command line arguments
+    if(argc < 2){
+        perror("Usage: ./ [path to file]\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Initialise openSSL
+    OpenSSL_add_all_algorithms();
+    ERR_load_BIO_strings();
+    ERR_load_crypto_strings();
+
+    char cert_path[1024], filename[1024];
+    FILE* csv;
+
+    // Get the path then open the csv file
+    strcpy(cert_path, argv[1]);
+    FILE* stream = fopen(cert_path, "r");
+
+    // Remove the path, get the file name, remove the ext then add "-output.csv"
+    char *temp;
+    temp = strchr(cert_path,'.');
+    *temp = '\0';
+    temp = strrchr(cert_path, '/') + 1;
+    strcpy(filename, temp);
+    strcat(filename, "-output.csv");
+
+    // Create a new csv for output
+    csv = fopen(filename, "w+");
+
+    char line[1024];
+    while (fgets(line, 1024, stream))
+    {
+        int result = 0;
+        char* path = getfield(line, PATH);
+        char* url = getfield(line, URL);
+
+        //Check the certificate
+//        result = check_cert(path, url);
+
+        fprintf(csv, "%s,%s,%d\n", path, url, result);
+
+        free(path);
+        free(url);
+    }
+
+    return 0;
+}
+
+int check_cert(char* path, char* url)
+{
+
+}
+
+char* getfield(char* line, int field)
 {
     int i = 0, pthsize = 0, urlsize = 0, delim = 0;
     char * path;
@@ -35,46 +90,16 @@ char* getfield(char* line, int num)
 
         } else {
             path[i - urlsize] = '\0';
-            url[i - pthsize] = '\0';
+            url[i - (pthsize + delim)] = '\0';
         }
     }
-    if(num == PATH){
+    if(field == PATH){
         free(url);
         return path;
     }
-    if(num == URL){
+    if(field == URL){
         free(path);
         return url;
     }
     return NULL;
-}
-
-
-int main(int argc, char *argv[]){
-
-    // Check the command line arguments
-    if(argc < 2){
-        perror("Usage: ./ [path to file]\n");
-        exit(EXIT_FAILURE);
-    }
-
-    char cert_path[1024];
-
-    strcpy(cert_path, argv[1]);
-
-    FILE* stream = fopen(cert_path, "r");
-
-    char line[1024];
-    while (fgets(line, 1024, stream))
-    {
-//        char* tmp[];
-//        strcpy(tmp,line);
-
-        printf("Path: %s\n", getfield(line, PATH));
-        printf("URL: %s\n", getfield(line, URL));
-
-//        free(tmp);
-    }
-
-    return 0;
 }

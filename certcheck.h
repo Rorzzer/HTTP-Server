@@ -10,3 +10,5 @@
 #define URL 1
 
 char* getfield(char* line, int num);
+int check_cert(char* path, char* url);
+
