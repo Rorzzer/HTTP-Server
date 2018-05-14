@@ -13,7 +13,7 @@ int main(int argc, char *argv[]){
 
     // Check the command line arguments
     if(argc < 2){
-        perror("Usage: ./ [path to file]\n");
+        printf("Usage: ./ [path to file]\n");
         exit(EXIT_FAILURE);
     }
 
@@ -22,23 +22,33 @@ int main(int argc, char *argv[]){
     ERR_load_BIO_strings();
     ERR_load_crypto_strings();
 
-    char cert_path[1024], filename[1024];
-    FILE* csv;
+    char cert_path[1024], outputfile[1024];
+    FILE *csv, *stream;
 
-    // Get the path then open the csv file
+    // Get the path then open the csv file if valid
     strcpy(cert_path, argv[1]);
-    FILE* stream = fopen(cert_path, "r");
 
-    // Remove the path, get the file name, remove the ext then add "-output.csv"
+    if((stream = fopen(cert_path, "r")) == NULL)
+    {
+        perror("Error");
+        exit(EXIT_FAILURE);
+    }
+
+    // Remove the input file from the path and add the output file (output.csv)
     char *temp;
-    temp = strchr(cert_path,'.');
+    temp = strrchr(cert_path,'/') + 1;
     *temp = '\0';
-    temp = strrchr(cert_path, '/') + 1;
-    strcpy(filename, temp);
-    strcat(filename, "-output.csv");
+    strcpy(outputfile, cert_path);
+    strcat(outputfile, "output:.csv");
+    printf("path after: %s\n", outputfile);
 
-    // Create a new csv for output
-    csv = fopen(filename, "w+");
+
+    // Open or create output csv
+    if((csv = fopen(outputfile, "w+")) == NULL)
+    {
+        perror("Error");
+        exit(EXIT_FAILURE);
+    }
 
     char line[1024];
     while (fgets(line, 1024, stream))
@@ -61,7 +71,7 @@ int main(int argc, char *argv[]){
 
 int check_cert(char* path, char* url)
 {
-
+    return 0;
 }
 
 char* getfield(char* line, int field)
