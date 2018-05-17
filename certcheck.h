@@ -7,8 +7,9 @@
 #endif //COMP30023_2018_PROJECT_2_MAIN_H
 
 #define PATH 0
-#define URL 1
+#define DOMAIN 1
 
+int check_time(ASN1_TIME *firstTime, ASN1_TIME *secondTime);
 char* getfield(char* line, int num);
 int check_cert(char* path, char* url);
 
