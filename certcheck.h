@@ -8,7 +8,15 @@
 
 #define PATH 0
 #define DOMAIN 1
+#define MIN_KEY_LENGTH 2048
+#define BITS 8
+#define CA_FALSE "CA:FALSE"
+#define TLS_AUTH "TLS Web Server Authentication"
 
+int check_keyusage(X509 *cert);
+int check_constraints(X509 *cert);
+int check_keylength(X509 *cert);
+int wildcard_check(char *domain, char *subject_cn);
 int check_time(ASN1_TIME *firstTime, ASN1_TIME *secondTime);
 char* getfield(char* line, int num);
 int check_cert(char* path, char* url);

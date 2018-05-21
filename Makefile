@@ -1,6 +1,6 @@
 ##Adapted from http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/
 CC=gcc
-CFLAGS=-Wall -g -std=gnu99 -L/usr/local/opt/openssl/lib -I/usr/local/opt/openssl/include -lssl -lcrypto
+CFLAGS=-Wall -g -std=gnu99 -lssl -lcrypto
 DEPS = certcheck.h
 OBJ = certcheck.o
 EXE = certcheck
