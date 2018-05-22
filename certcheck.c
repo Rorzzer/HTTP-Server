@@ -1,3 +1,7 @@
+//
+// Created by Rory Powell - 638753
+//
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <openssl/x509.h>
@@ -6,7 +10,6 @@
 #include <openssl/pem.h>
 #include <openssl/err.h>
 #include <openssl/asn1_mac.h>
-//#include <openssl/asn1t.h>
 #include <openssl/ssl.h>
 #include <string.h>
 #include <time.h>
