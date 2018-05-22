@@ -8,11 +8,16 @@
 
 #define PATH 0
 #define DOMAIN 1
+#define PASS 1
+#define FAIL 0
+#define CERT_FAIL 0
+#define CERT_PASS 1
 #define MIN_KEY_LENGTH 2048
 #define BITS 8
 #define CA_FALSE "CA:FALSE"
 #define TLS_AUTH "TLS Web Server Authentication"
 
+int check_SAN(X509 *cert, char *domain);
 int check_keyusage(X509 *cert);
 int check_constraints(X509 *cert);
 int check_keylength(X509 *cert);
